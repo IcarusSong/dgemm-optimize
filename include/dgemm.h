@@ -9,12 +9,14 @@
 #include <math.h>
 
 #define M 4096
-#define K 2045
+#define K 8192
 #define N 4096
 
-#define NC 512
-#define KC 64
-#define MC 64
+#define NUM_THREADS 16
+
+#define NC 256
+#define KC 256
+#define MC 128
 
 #define MR 4
 #define NR 8

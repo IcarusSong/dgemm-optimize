@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[]) {
     // 设置默认线程数
-    int num_threads = 1;  // 默认使用4线程
+    int num_threads = 16;  // 默认使用4线程
     if (argc > 1) {
         num_threads = atoi(argv[1]);
     }
@@ -48,30 +48,36 @@ int main(int argc, char *argv[]) {
                       (end.tv_nsec - start.tv_nsec) / 1e9;
     double blas_gflops = (flops / 1e9) / blas_time;
 
-    // clock_gettime(CLOCK_MONOTONIC, &start);
-    
-    // 这里调用你的dgemm实现
-    // dgemm(M, N, K, A, lda, B, ldb, C, ldc);
-    
-    // clock_gettime(CLOCK_MONOTONIC, &end);
 
-    // double my_time = (end.tv_sec - start.tv_sec) + 
-    //                   (end.tv_nsec - start.tv_nsec) / 1e9;
-    // double my_gflops = (flops / 1e9) / my_time;
+    
+    double min_my_time = 10000.0f;
+    for (int i = 0; i < 5; i++) {
+        clock_gettime(CLOCK_MONOTONIC, &start);
+    
+        dgemm(M, N, K, A, lda, B, ldb, C, ldc);
+        clock_gettime(CLOCK_MONOTONIC, &end);
+        double my_time = (end.tv_sec - start.tv_sec) + 
+                        (end.tv_nsec - start.tv_nsec) / 1e9;
 
-    // // 3. 验证正确性
-    // double max_error = 0.0;
-    // for (int i = 0; i < M; i++) {
-    //     for (int j = 0; j < N; j++) {
-    //         double err = fabs(C(i, j) - C_ref(i, j));
-    //         if (err > max_error) max_error = err;            
-    //     }
-    // }
+        min_my_time = min(min_my_time, my_time);
+        memset(C, 0, sizeof(double) * M * N);
+    }
+
+    dgemm(M, N, K, A, lda, B, ldb, C, ldc);
+    double my_gflops = (flops / 1e9) / min_my_time;
+    // 3. 验证正确性
+    double max_error = 0.0;
+    for (int i = 0; i < M; i++) {
+        for (int j = 0; j < N; j++) {
+            double err = fabs(C(i, j) - C_ref(i, j));
+            if (err > max_error) max_error = err;            
+        }
+    }
     printf("Matrix size: %d x %d x %d\n", M, K, N);
     printf("---------------------------------\n");
-    // printf("OpenBLAS time: %.4f sec, GFLOPS: %.2f\n", blas_time, blas_gflops);
-    // printf("My Gemm time:    %.4f sec, GFLOPS: %.2f\n", my_time, my_gflops);
-    // printf("Max error: %e\n", max_error);
+    printf("OpenBLAS time: %.4f sec, GFLOPS: %.2f\n", blas_time, blas_gflops);
+    printf("My Gemm time:    %.4f sec, GFLOPS: %.2f\n", min_my_time, my_gflops);
+    printf("Max error: %e\n", max_error);
 
     // 释放内存
     free(A); free(B); free(C); free(C_ref);
