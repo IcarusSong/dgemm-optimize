@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "bl_dgemm.h": "c",
+        "stdio.h": "c",
+        "bl_dgemm_kernel.h": "c",
+        "config.h": "c",
+        "dgemm.h": "c",
+        "time.h": "c"
+    }
+}

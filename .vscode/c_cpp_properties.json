@@ -1,0 +1,17 @@
+{
+  "configurations": [
+    {
+      "name": "Linux",
+      "includePath": [
+        "${workspaceFolder}/**",         // 包含整个工作区的路径
+        "${workspaceFolder}/include"     // 明确指定 include 目录
+      ],
+      "defines": ["_POSIX_C_SOURCE=199309L"],                     // 定义宏（如果有）
+      "compilerPath": "/usr/bin/gcc",   // 指定编译器路径
+      "cStandard": "c11",               // C 标准
+      "cppStandard": "c++20",           // C++ 标准
+      "intelliSenseMode": "gcc-x64"     // IntelliSense 模式
+    }
+  ],
+  "version": 4
+}
