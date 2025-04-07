@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 
     // clock_gettime(CLOCK_MONOTONIC, &start);
     
-    // // 这里调用你的dgemm实现
+    // 这里调用你的dgemm实现
     // dgemm(M, N, K, A, lda, B, ldb, C, ldc);
     
     // clock_gettime(CLOCK_MONOTONIC, &end);
@@ -69,7 +69,7 @@ int main(int argc, char *argv[]) {
     // }
     printf("Matrix size: %d x %d x %d\n", M, K, N);
     printf("---------------------------------\n");
-    printf("OpenBLAS time: %.4f sec, GFLOPS: %.2f\n", blas_time, blas_gflops);
+    // printf("OpenBLAS time: %.4f sec, GFLOPS: %.2f\n", blas_time, blas_gflops);
     // printf("My Gemm time:    %.4f sec, GFLOPS: %.2f\n", my_time, my_gflops);
     // printf("Max error: %e\n", max_error);
 
