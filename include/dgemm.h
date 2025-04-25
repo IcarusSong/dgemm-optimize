@@ -12,11 +12,10 @@
 #define K 8192
 #define N 4096
 
-#define NUM_THREADS 16
 
 #define NC 256
 #define KC 256
-#define MC 128
+#define MC 64
 
 #define MR 4
 #define NR 8

@@ -46,6 +46,8 @@ void dgemm(int m, int n, int k, double *A, int lda,
     
     // 每个线程有自己的 packed_A 和 packed_B
     int num_threads = omp_get_max_threads();
+    // printf("num_therads = %d\n", num_threads);
+    // num_threads = 8;
     double** packed_A_per_thread = (double**)malloc(num_threads * sizeof(double*));
     double** packed_B_per_thread = (double**)malloc(num_threads * sizeof(double*));
     
@@ -83,6 +85,7 @@ void dgemm(int m, int n, int k, double *A, int lda,
                 
                 // 调用微内核（不同线程的 C 区域不重叠，无需保护）
                 macro_kernel(curr_mc, curr_nc, curr_kc, packed_A, packed_B, &C(mc, nc), ldc);
+                // macro_kernel(curr_mc, curr_nc, curr_kc, alpha, packed_A, packed_B, beta, &C(mc, nc), ldc);
             }
         }
     }

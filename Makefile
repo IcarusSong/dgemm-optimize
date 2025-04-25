@@ -1,6 +1,6 @@
 # Compiler and flags
 CC = gcc
-CFLAGS = -O3 -mavx512f -fopenmp -Wextra -I./include
+CFLAGS = -O3 -mavx512f -fopenmp -Wextra -I./include -MMD -MP  # 添加 -MMD 和 -MP
 LDFLAGS = -lopenblas -lm
 
 # Source files
@@ -11,6 +11,9 @@ MAIN_SRC = main.c
 
 # Object files
 OBJS = $(DGEMM_SRC:.c=.o) $(KERNEL_SRC:.c=.o) $(MAIN_SRC:.c=.o)
+
+# Dependency files (.d files)
+DEPS = $(OBJS:.o=.d)
 
 # Directories
 BIN_DIR = bin
@@ -37,9 +40,11 @@ run: $(TARGET)
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# Include generated dependency files
+-include $(DEPS)
+
 # Clean up
 clean:
-	rm -f $(TARGET) $(OBJS)
-
+	rm -f $(TARGET) $(OBJS) $(DEPS)
 
 .PHONY: all clean run
